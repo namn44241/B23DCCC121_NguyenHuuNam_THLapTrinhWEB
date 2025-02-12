@@ -74,7 +74,10 @@
 		hideInMenu: true,
 	},
 	{
-		path: '/',
+		path: '/todo-list',
+		name: 'TodoList',
+		component: './TodoList',
+		icon: 'CalendarOutlined',
 	},
 	{
 		path: '/403',
@@ -85,6 +88,10 @@
 		path: '/hold-on',
 		component: './exception/DangCapNhat',
 		layout: false,
+	},
+	{
+		path: '/',
+		redirect: '/dashboard',
 	},
 	{
 		component: './exception/404',
