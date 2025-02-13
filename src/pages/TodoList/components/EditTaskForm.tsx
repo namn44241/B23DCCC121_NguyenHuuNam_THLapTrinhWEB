@@ -14,10 +14,7 @@ const TOPICS = [
   { label: 'JavaScript', value: 'javascript' },
 ];
 
-// Màu mặc định
-const DEFAULT_COLOR = '#ff4d4f';
-
-// Tách ColorPicker thành component riêng
+// Component ColorPicker giữ nguyên như cũ
 const ColorPickerComponent = ({ color, onChange }: { color: string; onChange: (color: string) => void }) => {
   const [open, setOpen] = useState(false);
 
@@ -52,14 +49,20 @@ const ColorPickerComponent = ({ color, onChange }: { color: string; onChange: (c
   );
 };
 
-interface CreateTaskFormProps {
+interface EditTaskFormProps {
+  task: {
+    id: string;
+    topic: string;
+    content: string;
+    color: string;
+  };
   onCancel: () => void;
   onSubmit: (values: any) => void;
 }
 
-const CreateTaskForm: React.FC<CreateTaskFormProps> = ({ onCancel, onSubmit }) => {
+const EditTaskForm: React.FC<EditTaskFormProps> = ({ task, onCancel, onSubmit }) => {
   const [form] = Form.useForm();
-  const [colorHex, setColorHex] = useState<string>(DEFAULT_COLOR);
+  const [colorHex, setColorHex] = useState<string>(task.color);
   const [customTopics, setCustomTopics] = useState<{ label: string; value: string }[]>([]);
 
   // Load custom topics từ localStorage
@@ -70,6 +73,14 @@ const CreateTaskForm: React.FC<CreateTaskFormProps> = ({ onCancel, onSubmit }) =
     }
   }, []);
 
+  // Set initial form values
+  useEffect(() => {
+    form.setFieldsValue({
+      topic: task.topic,
+      content: task.content
+    });
+  }, [task]);
+
   const handleSubmit = (values: any) => {
     // Nếu là topic mới, lưu vào localStorage
     if (!TOPICS.find(t => t.value === values.topic) && 
@@ -79,9 +90,11 @@ const CreateTaskForm: React.FC<CreateTaskFormProps> = ({ onCancel, onSubmit }) =
       localStorage.setItem('customTopics', JSON.stringify(newCustomTopics));
     }
     
-    onSubmit({ ...values, color: colorHex });
-    form.resetFields();
-    setColorHex(DEFAULT_COLOR);
+    onSubmit({ 
+      ...task,
+      ...values, 
+      color: colorHex 
+    });
   };
 
   return (
@@ -142,7 +155,7 @@ const CreateTaskForm: React.FC<CreateTaskFormProps> = ({ onCancel, onSubmit }) =
 
       <Form.Item style={{ marginBottom: 0 }}>
         <Button type="primary" htmlType="submit" style={{ marginRight: 8 }}>
-          Tạo Task
+          Lưu thay đổi
         </Button>
         <Button onClick={onCancel}>Hủy</Button>
       </Form.Item>
@@ -150,4 +163,4 @@ const CreateTaskForm: React.FC<CreateTaskFormProps> = ({ onCancel, onSubmit }) =
   );
 };
 
-export default CreateTaskForm;
+export default EditTaskForm; 
