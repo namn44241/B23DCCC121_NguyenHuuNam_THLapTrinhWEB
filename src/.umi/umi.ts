@@ -1,18 +1,15 @@
 // @ts-nocheck
 import './core/polyfill';
 import '@@/core/devScripts';
-import '../global.tsx';
 import { plugin } from './core/plugin';
 import './core/pluginRegister';
 import { createHistory } from './core/history';
-import { ApplyPluginsType } from 'C:/Users/ASUS/Documents/Gitlab/baseltw/node_modules/@umijs/runtime';
-import { renderClient } from 'C:/Users/ASUS/Documents/Gitlab/baseltw/node_modules/@umijs/renderer-react/dist/index.js';
+import { ApplyPluginsType } from 'C:/Users/ASUS/Documents/Gitlab/B23DCCC121_NguyenHuuNam_THLapTrinhWEB/node_modules/@umijs/runtime';
+import { renderClient } from 'C:/Users/ASUS/Documents/Gitlab/B23DCCC121_NguyenHuuNam_THLapTrinhWEB/node_modules/@umijs/renderer-react/dist/index.js';
 import { getRoutes } from './core/routes';
 
 
 
-import { _onCreate } from './plugin-locale/locale';
-_onCreate();
 
 const getClientRender = (args: { hot?: boolean; routes?: any[] } = {}) => plugin.applyPlugins({
   key: 'render',
@@ -26,8 +23,8 @@ const getClientRender = (args: { hot?: boolean; routes?: any[] } = {}) => plugin
         plugin,
         history: createHistory(args.hot),
         isServer: process.env.__IS_SERVER,
-        dynamicImport: true,
         rootElement: 'root',
+        defaultTitle: ``,
       },
     });
     return renderClient(opts);
